@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Консьерж-сервис — Private Travel Services</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .services-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+  .svc {
+    padding: 44px 32px;
+    background: var(--bg2);
+    border-top: 2px solid transparent;
+    transition: all .4s;
+    position: relative; overflow: hidden;
+  }
+  .svc::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(196,151,106,.06) 0%, transparent 60%);
+    opacity: 0; transition: opacity .4s;
+  }
+  .svc:hover { border-top-color: var(--honey); background: var(--bg3); }
+  .svc:hover::before { opacity: 1; }
+  .svc-icon { font-size: 28px; margin-bottom: 18px; display: block; }
+  .svc-title { font-family: var(--serif); font-size: 21px; font-weight: 400; color: var(--cream-light); margin-bottom: 12px; line-height: 1.2; }
+  .svc-text { font-size: 14px; font-weight: 300; color: var(--text-muted); line-height: 1.65; }
+  .svc-list { margin-top: 18px; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .svc-list li { font-size: 12px; font-weight: 300; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
+  .svc-list li::before { content: ''; display: block; width: 10px; height: 1px; background: var(--honey); opacity: .4; }
+
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+  .case-card {
+    padding: 44px 36px;
+    background: var(--bg2);
+    position: relative;
+    transition: background .3s;
+  }
+  .case-card:hover { background: var(--bg3); }
+  .case-tag {
+    font-family: var(--mono);
+    font-size: 9px; letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--honey);
+    margin-bottom: 16px; display: block;
+  }
+  .case-title {
+    font-family: var(--serif);
+    font-size: 20px; font-weight: 400;
+    color: var(--cream-light);
+    margin-bottom: 12px; line-height: 1.2;
+  }
+  .case-text {
+    font-size: 14px; font-weight: 300;
+    color: var(--text-muted); line-height: 1.65;
+  }
+
+  .promise-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+  }
+  .promise-item {
+    padding: 36px 28px;
+    background: var(--bg);
+    text-align: center;
+    transition: background .3s;
+  }
+  .promise-item:hover { background: var(--bg3); }
+  .promise-num {
+    font-family: var(--serif);
+    font-size: 52px; font-weight: 300;
+    font-style: italic;
+    color: var(--honey);
+    opacity: .6;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .promise-label {
+    font-family: var(--sans);
+    font-size: 13px; letter-spacing: .06em;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 1000px) { .services-list { grid-template-columns: repeat(2, 1fr); } .promise-row { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 700px) { .services-list { grid-template-columns: 1fr; } .cases-grid { grid-template-columns: 1fr; } .promise-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">PTS &mdash; <span>Private Travel</span></a>
+  <ul class="nav-links">
+    <li><a href="aviation.html">Авиация</a></li>
+    <li><a href="villas.html">Виллы и отели</a></li>
+    <li><a href="yachts.html">Яхты</a></li>
+    <li><a href="concierge.html">Консьерж</a></li>
+  </ul>
+  <a href="#form" class="nav-cta">Оставить заявку</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1920&q=80');"></div>
+  <span class="hero-label">Консьерж-сервис</span>
+  <h1 class="hero-title">Всё, что<br>выходит<br><em>за рамки</em></h1>
+  <p class="hero-sub">Столик в лучшем ресторане мира, билеты на закрытое событие или медицинская помощь за рубежом — мы решаем задачи, у которых нет стандартного решения.</p>
+  <div class="hero-actions">
+    <a href="#services" class="btn-primary">Что мы делаем</a>
+    <a href="#form" class="btn-ghost">Отправить запрос</a>
+  </div>
+  <div class="hero-scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="marquee-band">
+  <div class="marquee-track">
+    <span class="marquee-item">Ресторанные брони</span>
+    <span class="marquee-item">Закрытые события</span>
+    <span class="marquee-item">Медицина за рубежом</span>
+    <span class="marquee-item">Охрана и безопасность</span>
+    <span class="marquee-item">Визовая поддержка</span>
+    <span class="marquee-item">Подарки и сюрпризы</span>
+    <span class="marquee-item">Ресторанные брони</span>
+    <span class="marquee-item">Закрытые события</span>
+    <span class="marquee-item">Медицина за рубежом</span>
+    <span class="marquee-item">Охрана и безопасность</span>
+    <span class="marquee-item">Визовая поддержка</span>
+    <span class="marquee-item">Подарки и сюрпризы</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="reveal">
+    <span class="section-label">01 &mdash; Услуги</span>
+    <h2 class="section-title">Нет стандартных<br><em>запросов</em></h2>
+  </div>
+  <div class="services-list" data-stagger>
+
+    <div class="svc reveal">
+      <span class="svc-icon">🍽️</span>
+      <div class="svc-title">Рестораны и события</div>
+      <p class="svc-text">Столик в Noma, Eleven Madison Park или закрытой вечеринке на вилле Ротшильдов — там, где обычно говорят «нет мест».</p>
+      <ul class="svc-list">
+        <li>Мишленовские рестораны</li>
+        <li>Закрытые art-события</li>
+        <li>Арт-Базель, Канны, Венеция</li>
+        <li>Частные ужины</li>
+      </ul>
+    </div>
+
+    <div class="svc reveal">
+      <span class="svc-icon">🏥</span>
+      <div class="svc-title">Медицина за рубежом</div>
+      <p class="svc-text">Экстренная помощь, плановые процедуры или check-up в лучших клиниках мира. Организуем логистику, переводчика и сопровождение.</p>
+      <ul class="svc-list">
+        <li>Клиники Германии, Швейцарии</li>
+        <li>Чекап в Mayo Clinic</li>
+        <li>Экстренная медпомощь за рубежом</li>
+        <li>Медицинский эскорт</li>
+      </ul>
+    </div>
+
+    <div class="svc reveal">
+      <span class="svc-icon">🛡️</span>
+      <div class="svc-title">Безопасность</div>
+      <p class="svc-text">Личная охрана, проверка маршрутов, безопасное жильё. Работаем с профессиональными командами в любой стране.</p>
+      <ul class="svc-list">
+        <li>Личная охрана (1–4 сотрудника)</li>
+        <li>Разведка маршрутов</li>
+        <li>Безопасные резиденции</li>
+        <li>Кризисное управление</li>
+      </ul>
+    </div>
+
+    <div class="svc reveal">
+      <span class="svc-icon">🎫</span>
+      <div class="svc-title">Эксклюзивный доступ</div>
+      <p class="svc-text">Финал Уимблдона с лучших мест, ложа на Формуле-1 в Монако, backstage на концерте. Туда, где билетов официально нет.</p>
+      <ul class="svc-list">
+        <li>Спортивные гран-при</li>
+        <li>Закрытые показы мод</li>
+        <li>Приватные аукционы</li>
+        <li>Backstage и VIP-зоны</li>
+      </ul>
+    </div>
+
+    <div class="svc reveal">
+      <span class="svc-icon">🎁</span>
+      <div class="svc-title">Подарки и сюрпризы</div>
+      <p class="svc-text">Организуем незабываемые моменты — от букета на вилле до частного концерта любимого артиста. Любая идея, любой масштаб.</p>
+      <ul class="svc-list">
+        <li>Предложение руки и сердца</li>
+        <li>Дни рождения под ключ</li>
+        <li>Редкие покупки и арт</li>
+        <li>Персональные послания</li>
+      </ul>
+    </div>
+
+    <div class="svc reveal">
+      <span class="svc-icon">📋</span>
+      <div class="svc-title">Визы и документы</div>
+      <p class="svc-text">Срочные визы, ВНЖ в экзотических юрисдикциях, паспорта инвестора — юридическая и административная поддержка в любой стране.</p>
+      <ul class="svc-list">
+        <li>Срочные визы (24–48 ч)</li>
+        <li>ВНЖ Португалии, ОАЭ</li>
+        <li>Гражданство Карибских островов</li>
+        <li>Нотариальные переводы</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="section section-alt" id="cases">
+  <div class="reveal">
+    <span class="section-label">02 &mdash; Примеры запросов</span>
+    <h2 class="section-title">Реальные<br><em>задачи</em></h2>
+  </div>
+  <div class="cases-grid" data-stagger>
+    <div class="case-card reveal">
+      <span class="case-tag">Ресторан + логистика</span>
+      <div class="case-title">Ужин в Noma за 36 часов</div>
+      <p class="case-text">Клиент прилетел в Копенгаген спонтанно. Столик в Noma (лист ожидания — 3 месяца), трансфер, отель рядом — всё за полтора дня. Через нашего партнёра в Дании.</p>
+    </div>
+    <div class="case-card reveal">
+      <span class="case-tag">Медицина</span>
+      <div class="case-title">Плановый check-up в Цюрихе</div>
+      <p class="case-text">Организовали трёхдневный медицинский тур для семьи из четырёх человек: клиника, переводчики, отель, детская программа для детей пока родители на обследовании.</p>
+    </div>
+    <div class="case-card reveal">
+      <span class="case-tag">Безопасность</span>
+      <div class="case-title">Личная охрана в Бангкоке</div>
+      <p class="case-text">Деловая поездка в регион с повышенным уровнем риска. Два сотрудника, маршруты проверены заранее, эвакуационный план на случай ЧП. Командировка прошла без инцидентов.</p>
+    </div>
+    <div class="case-card reveal">
+      <span class="case-tag">Эксклюзивный доступ</span>
+      <div class="case-title">Ложа на Гран-при Монако</div>
+      <p class="case-text">Четыре места в официальной ложе трассы, яхта в порту на время гонки, ужин с одним из гонщиков команды — организовано за три недели.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="section" id="numbers">
+  <div class="reveal">
+    <span class="section-label">03 &mdash; Цифры</span>
+    <h2 class="section-title">В числах</h2>
+  </div>
+  <div class="promise-row" data-stagger>
+    <div class="promise-item reveal">
+      <div class="promise-num">24/7</div>
+      <div class="promise-label">Менеджер на связи</div>
+    </div>
+    <div class="promise-item reveal">
+      <div class="promise-num">1 ч</div>
+      <div class="promise-label">Время первого ответа</div>
+    </div>
+    <div class="promise-item reveal">
+      <div class="promise-num">50+</div>
+      <div class="promise-label">Стран присутствия</div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section" id="form">
+  <div class="form-layout">
+    <div class="form-left reveal">
+      <span class="section-label">04 &mdash; Заявка</span>
+      <h2 class="section-title">Опишите<br><em>задачу</em></h2>
+      <p>Нет нестандартных запросов — есть только те, которые мы ещё не решали. Напишите, что нужно.</p>
+      <div class="form-badge">
+        <div class="form-badge-icon">🔑</div>
+        <div class="form-badge-text">
+          <strong>Конфиденциально и без осуждения</strong>
+          Любой запрос — личный, деловой или нестандартный — обрабатывается с полным уважением.
+        </div>
+      </div>
+    </div>
+    <div>
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="name">Имя</label>
+            <input type="text" id="name" name="name" placeholder="Как обращаться" required>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="contact">Контакт</label>
+            <input type="text" id="contact" name="contact" placeholder="Telegram / WhatsApp" required>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="svctype">Тип запроса</label>
+          <select id="svctype" name="svctype">
+            <option value="" disabled selected>— выберите</option>
+            <option>Ресторан / событие</option>
+            <option>Медицина за рубежом</option>
+            <option>Безопасность</option>
+            <option>Эксклюзивный доступ</option>
+            <option>Подарок / сюрприз</option>
+            <option>Визы и документы</option>
+            <option>Другое</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="country">Страна / Город</label>
+          <input type="text" id="country" name="country" placeholder="Где нужна помощь">
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="task">Опишите задачу</label>
+          <textarea id="task" name="task" placeholder="Чем подробнее — тем точнее подберём решение…" style="min-height:120px;"></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Отправить запрос →</button>
+        <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h3>Заявка принята</h3>
+        <p>Менеджер свяжется с вами в течение часа.<br>Спасибо, что выбрали нас.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="footer-logo">PTS &mdash; <span>Private Travel</span></a>
+  <ul class="footer-nav">
+    <li><a href="aviation.html">Авиация</a></li>
+    <li><a href="villas.html">Виллы</a></li>
+    <li><a href="yachts.html">Яхты</a></li>
+    <li><a href="concierge.html">Консьерж</a></li>
+  </ul>
+  <div class="footer-contacts">
+    <a href="https://t.me/pts">Telegram</a>
+    <a href="https://wa.me/79000000000">WhatsApp</a>
+    <a href="mailto:hello@pts.travel">hello@pts.travel</a>
+  </div>
+  <p class="footer-tagline">«Мы не агентство, мы партнёры. Сначала — комфорт, потом логистика.»</p>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

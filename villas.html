@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Виллы и отели — Private Travel Services</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .villas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+  .villa-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: var(--bg2);
+  }
+  .villa-card-img {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform .7s ease;
+  }
+  .villa-card:hover .villa-card-img { transform: scale(1.05); }
+  .villa-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(42,41,37,.92) 0%, rgba(42,41,37,.3) 55%, transparent 100%);
+  }
+  .villa-card-body {
+    position: relative;
+    padding: 36px 32px;
+  }
+  .villa-card-tag {
+    font-family: var(--mono);
+    font-size: 9px; letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--honey); margin-bottom: 10px; display: block;
+  }
+  .villa-card-name {
+    font-family: var(--serif);
+    font-size: 22px; font-weight: 400;
+    color: var(--cream-light);
+    margin-bottom: 10px; line-height: 1.15;
+  }
+  .villa-card-desc {
+    font-size: 13px; font-weight: 300;
+    color: rgba(216,207,194,.65);
+    line-height: 1.6;
+  }
+
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+  .type-card {
+    padding: 44px 36px;
+    background: var(--bg);
+    border-top: 2px solid transparent;
+    transition: all .4s;
+  }
+  .type-card:hover { border-top-color: var(--honey); background: var(--bg3); }
+  .type-icon { font-size: 30px; margin-bottom: 20px; display: block; }
+  .type-title {
+    font-family: var(--serif);
+    font-size: 24px; font-weight: 400;
+    color: var(--cream-light);
+    margin-bottom: 14px;
+  }
+  .type-text {
+    font-size: 14px; font-weight: 300;
+    color: var(--text-muted); line-height: 1.65;
+  }
+  .type-list {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid var(--border-dim);
+    list-style: none; display: flex; flex-direction: column; gap: 7px;
+  }
+  .type-list li {
+    font-size: 13px; font-weight: 300;
+    color: var(--honey);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .type-list li::before {
+    content: '';
+    display: block; width: 14px; height: 1px;
+    background: var(--honey); opacity: .5;
+  }
+
+  @media (max-width: 900px) {
+    .villas-grid { grid-template-columns: 1fr 1fr; }
+    .types-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .villas-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">PTS &mdash; <span>Private Travel</span></a>
+  <ul class="nav-links">
+    <li><a href="aviation.html">Авиация</a></li>
+    <li><a href="villas.html">Виллы и отели</a></li>
+    <li><a href="yachts.html">Яхты</a></li>
+    <li><a href="concierge.html">Консьерж</a></li>
+  </ul>
+  <a href="#form" class="nav-cta">Оставить заявку</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1920&q=80');"></div>
+  <span class="hero-label">Виллы и отели</span>
+  <h1 class="hero-title">Ваше<br>пространство,<br><em>ваши правила</em></h1>
+  <p class="hero-sub">Эксклюзивные виллы с персоналом и бутик-отели, которых нет в открытом доступе. Места, где никто не мешает — даже Google.</p>
+  <div class="hero-actions">
+    <a href="#types" class="btn-primary">Форматы размещения</a>
+    <a href="#form" class="btn-ghost">Подобрать жильё</a>
+  </div>
+  <div class="hero-scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="marquee-band">
+  <div class="marquee-track">
+    <span class="marquee-item">Мальдивы</span>
+    <span class="marquee-item">Лазурный берег</span>
+    <span class="marquee-item">Тоскана</span>
+    <span class="marquee-item">Дубай</span>
+    <span class="marquee-item">Сейшелы</span>
+    <span class="marquee-item">Сантьяго-де-Мьяс</span>
+    <span class="marquee-item">Санторини</span>
+    <span class="marquee-item">Аспен</span>
+    <span class="marquee-item">Мальдивы</span>
+    <span class="marquee-item">Лазурный берег</span>
+    <span class="marquee-item">Тоскана</span>
+    <span class="marquee-item">Дубай</span>
+    <span class="marquee-item">Сейшелы</span>
+    <span class="marquee-item">Санторини</span>
+    <span class="marquee-item">Аспен</span>
+  </div>
+</div>
+
+<!-- TYPES -->
+<section class="section" id="types">
+  <div class="reveal">
+    <span class="section-label">01 &mdash; Форматы</span>
+    <h2 class="section-title">Два формата<br>— один <em>стандарт</em></h2>
+  </div>
+  <div class="types-grid" data-stagger>
+
+    <div class="type-card reveal">
+      <span class="type-icon">🏡</span>
+      <div class="type-title">Приватная вилла</div>
+      <p class="type-text">Весь объект только для вас. Собственный бассейн, полный персонал — от шефа до дворецкого, нет соседей и нет чужих глаз. Живёте как дома, только лучше.</p>
+      <ul class="type-list">
+        <li>Персональный шеф-повар</li>
+        <li>Дворецкий 24/7</li>
+        <li>Охрана периметра</li>
+        <li>Трансфер и автопарк</li>
+        <li>Детский досуг и няни</li>
+      </ul>
+    </div>
+
+    <div class="type-card reveal">
+      <span class="type-icon">🏨</span>
+      <div class="type-title">Бутик-отель / Overwater Villa</div>
+      <p class="type-text">Отели, которых нет на Booking. Закрытые острова, overwater-виллы на Мальдивах, горные шале с одним номером. Максимум приватности при сервисе 5+.</p>
+      <ul class="type-list">
+        <li>Закрытые острова и resort-only</li>
+        <li>Overwater виллы</li>
+        <li>Горные шале</li>
+        <li>Городские пентхаусы</li>
+        <li>Исторические поместья</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section class="section section-alt" id="dest">
+  <div class="reveal">
+    <span class="section-label">02 &mdash; Направления</span>
+    <h2 class="section-title">Где мы<br><em>работаем</em></h2>
+  </div>
+  <div class="villas-grid" data-stagger>
+
+    <div class="villa-card reveal">
+      <div class="villa-card-img" style="background-image:url('https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=800&q=80');"></div>
+      <div class="villa-card-overlay"></div>
+      <div class="villa-card-body">
+        <span class="villa-card-tag">Мальдивы</span>
+        <div class="villa-card-name">Overwater Villas</div>
+        <p class="villa-card-desc">Приватные острова, где океан начинается прямо у террасы.</p>
+      </div>
+    </div>
+
+    <div class="villa-card reveal">
+      <div class="villa-card-img" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80');"></div>
+      <div class="villa-card-overlay"></div>
+      <div class="villa-card-body">
+        <span class="villa-card-tag">Лазурный берег</span>
+        <div class="villa-card-name">Виллы Кап-Ферра</div>
+        <p class="villa-card-desc">Тихие пеньки в пяти минутах от Монако. Вид на Средиземное море.</p>
+      </div>
+    </div>
+
+    <div class="villa-card reveal">
+      <div class="villa-card-img" style="background-image:url('https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&q=80');"></div>
+      <div class="villa-card-overlay"></div>
+      <div class="villa-card-body">
+        <span class="villa-card-tag">Тоскана, Италия</span>
+        <div class="villa-card-name">Исторические поместья</div>
+        <p class="villa-card-desc">Замки XIV–XVIII вв. с виноградниками и бассейнами.</p>
+      </div>
+    </div>
+
+    <div class="villa-card reveal">
+      <div class="villa-card-img" style="background-image:url('https://images.unsplash.com/photo-1602343168117-bb8ffe3e2e9f?w=800&q=80');"></div>
+      <div class="villa-card-overlay"></div>
+      <div class="villa-card-body">
+        <span class="villa-card-tag">Дубай, ОАЭ</span>
+        <div class="villa-card-name">Palm Villa & Penthouse</div>
+        <p class="villa-card-desc">Пальмовый остров, частный пляж, вид на городские огни.</p>
+      </div>
+    </div>
+
+    <div class="villa-card reveal">
+      <div class="villa-card-img" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80');"></div>
+      <div class="villa-card-overlay"></div>
+      <div class="villa-card-body">
+        <span class="villa-card-tag">Сейшелы</span>
+        <div class="villa-card-name">Экзотические резорты</div>
+        <p class="villa-card-desc">Закрытые острова с единственным коттеджем в окружении джунглей.</p>
+      </div>
+    </div>
+
+    <div class="villa-card reveal" style="background:var(--bg3);justify-content:center;align-items:center;min-height:300px;">
+      <div style="text-align:center;padding:40px;">
+        <div style="font-family:var(--serif);font-size:42px;font-style:italic;color:var(--honey);opacity:.35;margin-bottom:16px;">"</div>
+        <p style="font-family:var(--serif);font-size:16px;font-style:italic;font-weight:300;color:var(--text-muted);line-height:1.7;">Назовите страну — найдём лучшее место, которого нет на Booking.</p>
+        <a href="#form" class="btn-primary" style="margin-top:24px;font-size:10px;padding:12px 28px;">Запросить</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section class="section" id="included">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
+    <div class="reveal">
+      <span class="section-label">03 &mdash; Что включено</span>
+      <h2 class="section-title">Всё,<br>что нужно<br><em>для отдыха</em></h2>
+      <p style="margin-top:28px;font-size:16px;font-weight:300;color:var(--text-muted);line-height:1.75;">Мы организуем не только жильё, но и полную инфраструктуру вокруг него.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:3px;" data-stagger>
+      <div class="reveal" style="display:flex;gap:16px;align-items:flex-start;padding:26px 28px;background:var(--bg2);">
+        <span style="font-size:20px;flex-shrink:0;">👨‍🍳</span>
+        <div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--cream-light);margin-bottom:6px;">Персональный шеф</div>
+          <div style="font-size:13px;font-weight:300;color:var(--text-muted);line-height:1.5;">Закупка продуктов, меню под диету и вкусы, сервировка.</div>
+        </div>
+      </div>
+      <div class="reveal" style="display:flex;gap:16px;align-items:flex-start;padding:26px 28px;background:var(--bg2);">
+        <span style="font-size:20px;flex-shrink:0;">🚗</span>
+        <div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--cream-light);margin-bottom:6px;">Трансфер и авто</div>
+          <div style="font-size:13px;font-weight:300;color:var(--text-muted);line-height:1.5;">Водитель 24/7, аренда яхты или вертолёта — по запросу.</div>
+        </div>
+      </div>
+      <div class="reveal" style="display:flex;gap:16px;align-items:flex-start;padding:26px 28px;background:var(--bg2);">
+        <span style="font-size:20px;flex-shrink:0;">🛡️</span>
+        <div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--cream-light);margin-bottom:6px;">Охрана</div>
+          <div style="font-size:13px;font-weight:300;color:var(--text-muted);line-height:1.5;">Периметр, личная охрана, безопасность маршрутов — по запросу.</div>
+        </div>
+      </div>
+      <div class="reveal" style="display:flex;gap:16px;align-items:flex-start;padding:26px 28px;background:var(--bg2);">
+        <span style="font-size:20px;flex-shrink:0;">🎉</span>
+        <div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--cream-light);margin-bottom:6px;">Мероприятия под ключ</div>
+          <div style="font-size:13px;font-weight:300;color:var(--text-muted);line-height:1.5;">Дни рождения, свадьбы, деловые встречи прямо на вилле.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section" id="form">
+  <div class="form-layout">
+    <div class="form-left reveal">
+      <span class="section-label">04 &mdash; Заявка</span>
+      <h2 class="section-title">Найдём<br><em>вашу<br>виллу</em></h2>
+      <p>Пришлём подборку в течение часа. Только лучшие варианты под ваш запрос.</p>
+      <div class="form-badge">
+        <div class="form-badge-icon">🏡</div>
+        <div class="form-badge-text">
+          <strong>Объекты, которых нет в открытом доступе</strong>
+          Доступ к закрытым виллам и островам через прямые контакты.
+        </div>
+      </div>
+    </div>
+    <div>
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="name">Имя</label>
+            <input type="text" id="name" name="name" placeholder="Как обращаться" required>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="contact">Контакт</label>
+            <input type="text" id="contact" name="contact" placeholder="Telegram / WhatsApp" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="dest">Направление</label>
+            <input type="text" id="dest" name="dest" placeholder="Страна или регион">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="dates">Даты</label>
+            <input type="text" id="dates" name="dates" placeholder="Заезд — выезд">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="pax">Гостей</label>
+            <input type="text" id="pax" name="pax" placeholder="Количество человек">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="type">Формат</label>
+            <select id="type" name="type">
+              <option value="" disabled selected>— выберите</option>
+              <option>Приватная вилла</option>
+              <option>Бутик-отель</option>
+              <option>Overwater Villa</option>
+              <option>Горное шале</option>
+              <option>Исторические поместья</option>
+              <option>Помогите выбрать</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="wishes">Пожелания</label>
+          <textarea id="wishes" name="wishes" placeholder="Бюджет, персонал, особые требования…"></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Отправить запрос →</button>
+        <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h3>Заявка принята</h3>
+        <p>Менеджер свяжется с вами в течение часа.<br>Спасибо, что выбрали нас.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">PTS &mdash; <span>Private Travel</span></a>
+  <ul class="footer-nav">
+    <li><a href="aviation.html">Авиация</a></li>
+    <li><a href="villas.html">Виллы</a></li>
+    <li><a href="yachts.html">Яхты</a></li>
+    <li><a href="concierge.html">Консьерж</a></li>
+  </ul>
+  <div class="footer-contacts">
+    <a href="https://t.me/pts">Telegram</a>
+    <a href="https://wa.me/79000000000">WhatsApp</a>
+    <a href="mailto:hello@pts.travel">hello@pts.travel</a>
+  </div>
+  <p class="footer-tagline">«Мы не агентство, мы партнёры. Сначала — комфорт, потом логистика.»</p>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>

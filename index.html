@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Travel Services — Luxury Travel</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── index.html — page-specific styles ── */
+
+/* Process section responsive grid */
+.process-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .process-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+/* Mobile sticky CTA */
+.mobile-sticky-cta { display: none; }
+@media (max-width: 860px) {
+  .mobile-sticky-cta {
+    display: block;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--honey);
+    color: var(--charcoal);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 18px 24px;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+    text-decoration: none;
+    z-index: 300;
+    transition: background .3s;
+  }
+  .mobile-sticky-cta:active { background: var(--accent-lt); }
+  footer { padding-bottom: 80px; }
+}
+
+/* Multi-step form */
+.form-step {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.form-step-2 { display: none; }
+.form-step-2.active { display: flex; }
+
+.form-next-btn {
+  margin-top: 18px;
+  background: transparent;
+  color: var(--honey);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: 18px 40px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: all .3s;
+}
+.form-next-btn:hover {
+  background: rgba(196,151,106,.07);
+  border-color: var(--honey);
+}
+
+.form-back-btn {
+  margin-bottom: 4px;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color .3s;
+}
+.form-back-btn:hover { color: var(--text-muted); }
+.form-back-btn::before { content: '←'; }
+
+.form-step-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--honey);
+  padding: 10px 0 6px;
+  border-bottom: 1px solid var(--border-dim);
+  margin-bottom: 4px;
+}
+
+/* Date input styling */
+input[type="date"] {
+  color-scheme: dark;
+  cursor: pointer;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: opacity(0.45) sepia(1) hue-rotate(340deg) saturate(1.5);
+  cursor: pointer;
+  transition: filter .3s;
+}
+input[type="date"]:hover::-webkit-calendar-picker-indicator,
+input[type="date"]:focus::-webkit-calendar-picker-indicator {
+  filter: opacity(0.85) sepia(1) hue-rotate(340deg) saturate(1.5);
+}
+input[type="number"] { cursor: text; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">PTS &mdash; <span>Private Travel</span></a>
+  <ul class="nav-links">
+    <li><a href="aviation.html">Авиация</a></li>
+    <li><a href="villas.html">Виллы и отели</a></li>
+    <li><a href="yachts.html">Яхты</a></li>
+    <li><a href="concierge.html">Консьерж</a></li>
+  </ul>
+  <a href="#form" class="nav-cta">Оставить заявку</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80');"></div>
+  <span class="hero-label">Бизнес-авиация · Яхты · Виллы · Консьерж</span>
+  <h1 class="hero-title">Путешествие<br>на ваших<br><em>условиях</em></h1>
+  <p class="hero-sub">Полный спектр премиум-сервисов для тех, кто привык к лучшему. Один партнёр — для всех запросов.</p>
+  <div class="hero-actions">
+    <a href="#form" class="btn-primary">Оставить заявку</a>
+    <a href="#services" class="btn-ghost">Наши услуги</a>
+  </div>
+  <div class="hero-scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-band">
+  <div class="marquee-track">
+    <span class="marquee-item">Бизнес-авиация</span>
+    <span class="marquee-item">Яхт-чартер</span>
+    <span class="marquee-item">Виллы & Отели</span>
+    <span class="marquee-item">Консьерж-сервис</span>
+    <span class="marquee-item">NDA & Анонимность</span>
+    <span class="marquee-item">24/7 Поддержка</span>
+    <span class="marquee-item">Под ключ</span>
+    <span class="marquee-item">Бизнес-авиация</span>
+    <span class="marquee-item">Яхт-чартер</span>
+    <span class="marquee-item">Виллы & Отели</span>
+    <span class="marquee-item">Консьерж-сервис</span>
+    <span class="marquee-item">NDA & Анонимность</span>
+    <span class="marquee-item">24/7 Поддержка</span>
+    <span class="marquee-item">Под ключ</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="reveal">
+    <span class="section-label">01 &mdash; Услуги</span>
+    <h2 class="section-title">Всё, что нужно<br>для <em>идеального</em> путешествия</h2>
+  </div>
+  <div class="services-grid" data-stagger>
+
+    <a href="aviation.html" class="service-card reveal reveal-delay-1">
+      <div class="service-card-num">01</div>
+      <span class="service-card-icon">✈️</span>
+      <div class="service-card-name">Бизнес-авиация</div>
+      <p class="service-card-desc">Частные перелёты без очередей и расписания. Light Jet, Midsize, Heavy — подберём под маршрут и компанию. Весь мир в нескольких часах от вас.</p>
+      <div class="service-card-link">Подробнее</div>
+    </a>
+
+    <a href="villas.html" class="service-card reveal reveal-delay-2">
+      <div class="service-card-num">02</div>
+      <span class="service-card-icon">🏛️</span>
+      <div class="service-card-name">Виллы и отели</div>
+      <p class="service-card-desc">Эксклюзивные виллы с персоналом и скрытые бутик-отели, которых нет в открытом доступе. Пространство, где никто не мешает.</p>
+      <div class="service-card-link">Подробнее</div>
+    </a>
+
+    <a href="yachts.html" class="service-card reveal reveal-delay-3">
+      <div class="service-card-num">03</div>
+      <span class="service-card-icon">⛵</span>
+      <div class="service-card-name">Яхт-чартер</div>
+      <p class="service-card-desc">От дневной прогулки в Монако до недели на Мальдивах. Проверенные яхты, профессиональные экипажи, маршрут по вашему сценарию.</p>
+      <div class="service-card-link">Подробнее</div>
+    </a>
+
+    <a href="concierge.html" class="service-card reveal reveal-delay-4">
+      <div class="service-card-num">04</div>
+      <span class="service-card-icon">🔑</span>
+      <div class="service-card-name">Консьерж-сервис</div>
+      <p class="service-card-desc">Столик в ресторане, билеты на закрытое мероприятие, медицинская помощь за рубежом. Всё, что выходит за рамки стандартного — наша специализация.</p>
+      <div class="service-card-link">Подробнее</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="section section-alt" id="why">
+  <div class="reveal">
+    <span class="section-label">02 &mdash; Почему мы</span>
+    <h2 class="section-title">Доверие тех,<br>кто привык к <em>лучшему</em></h2>
+  </div>
+  <div class="why-grid" data-stagger>
+    <div class="why-item reveal">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#c4976a" stroke-width="1"/><path d="M8 14l4 4 8-8" stroke="#c4976a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="why-item-title">Один менеджер для всего</div>
+      <div class="why-item-text">Не нужно звонить в пять разных агентств. Ваш персональный менеджер координирует всё — от джета до ресторанной брони.</div>
+    </div>
+    <div class="why-item reveal">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M14 3L4 8v7c0 4.8 3.8 9.3 10 10.5C20.2 24.3 24 19.8 24 15V8L14 3z" stroke="#c4976a" stroke-width="1" stroke-linejoin="round"/></svg>
+      <div class="why-item-title">NDA и полная анонимность</div>
+      <div class="why-item-text">Конфиденциальность — не опция, это стандарт. Ваши данные, маршруты и запросы не выходят за пределы нашей команды.</div>
+    </div>
+    <div class="why-item reveal">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="#c4976a" stroke-width="1"/><path d="M14 7v7l4 2.5" stroke="#c4976a" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="why-item-title">Ответ за 1 час</div>
+      <div class="why-item-text">Оставляете заявку — через час у вас готовая подборка с ценами и деталями. Без долгих переписок и ожиданий.</div>
+    </div>
+    <div class="why-item reveal">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M5 14h18M5 9h18M5 19h10" stroke="#c4976a" stroke-width="1" stroke-linecap="round"/></svg>
+      <div class="why-item-title">Напрямую с владельцами</div>
+      <div class="why-item-text">Работаем без посредников — ни в авиации, ни в яхт-чартере. Прямые цены и прямой контроль качества.</div>
+    </div>
+    <div class="why-item reveal">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M4 20l6-6 5 5 9-11" stroke="#c4976a" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="why-item-title">Организуем под ключ</div>
+      <div class="why-item-text">Перелёт, трансфер, питание, охрана, визы — весь логистический слой на нас. Вы думаете об отдыхе.</div>
+    </div>
+    <div class="why-item reveal">
+      <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="5" stroke="#c4976a" stroke-width="1"/><path d="M5 25c0-5 4-8 9-8s9 3 9 8" stroke="#c4976a" stroke-width="1" stroke-linecap="round"/></svg>
+      <div class="why-item-title">24/7 на связи</div>
+      <div class="why-item-text">В любом часовом поясе, в любой момент поездки. Если что-то идёт не так — мы уже решаем.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="process-grid">
+    <div class="reveal">
+      <span class="section-label">03 &mdash; Процесс</span>
+      <h2 class="section-title">Просто<br><em>оставьте<br>заявку</em></h2>
+      <p style="margin-top:28px;font-size:16px;font-weight:300;color:var(--text-muted);line-height:1.75;max-width:340px;">Остальное берём на себя. Один звонок или сообщение запускает всю цепочку.</p>
+    </div>
+    <div>
+      <div style="display:flex;flex-direction:column;gap:0;" data-stagger>
+        <div class="reveal" style="display:grid;grid-template-columns:44px 1fr;gap:24px;padding:32px 0;border-bottom:1px solid var(--border-dim);">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--honey);padding-top:4px;">01</div>
+          <div>
+            <div style="font-family:var(--serif);font-size:20px;font-weight:400;color:var(--cream-light);margin-bottom:8px;">Оставляете заявку</div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);line-height:1.6;">Форма на сайте, Telegram или звонок — как удобнее.</div>
+          </div>
+        </div>
+        <div class="reveal" style="display:grid;grid-template-columns:44px 1fr;gap:24px;padding:32px 0;border-bottom:1px solid var(--border-dim);">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--honey);padding-top:4px;">02</div>
+          <div>
+            <div style="font-family:var(--serif);font-size:20px;font-weight:400;color:var(--cream-light);margin-bottom:8px;">Менеджер уточняет детали</div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);line-height:1.6;">Даты, направление, формат, пожелания — один разговор.</div>
+          </div>
+        </div>
+        <div class="reveal" style="display:grid;grid-template-columns:44px 1fr;gap:24px;padding:32px 0;border-bottom:1px solid var(--border-dim);">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--honey);padding-top:4px;">03</div>
+          <div>
+            <div style="font-family:var(--serif);font-size:20px;font-weight:400;color:var(--cream-light);margin-bottom:8px;">Получаете подборку</div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);line-height:1.6;">3–5 вариантов с ценами, фото и деталями за 1 час.</div>
+          </div>
+        </div>
+        <div class="reveal" style="display:grid;grid-template-columns:44px 1fr;gap:24px;padding:32px 0;">
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--honey);padding-top:4px;">04</div>
+          <div>
+            <div style="font-family:var(--serif);font-size:20px;font-weight:400;color:var(--cream-light);margin-bottom:8px;">Организуем под ключ</div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);line-height:1.6;">Перелёт, трансфер, питание, охрана — всё включено.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section" id="form">
+  <div class="form-layout">
+    <div class="form-left reveal">
+      <span class="section-label">04 &mdash; Заявка</span>
+      <h2 class="section-title">Расскажите<br>о <em>вашем<br>запросе</em></h2>
+      <p>Подберём варианты за 1 час. Без давления — только подборка и цены.</p>
+      <div class="form-badge">
+        <div class="form-badge-icon">⏱</div>
+        <div class="form-badge-text">
+          <strong>Ответ в течение часа</strong>
+          Менеджер свяжется удобным способом для уточнения деталей.
+        </div>
+      </div>
+    </div>
+    <div>
+      <form id="contactForm">
+
+        <!-- ШАГ 1 — Контакт и услуга -->
+        <div class="form-step" id="formStep1">
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="name">Имя</label>
+              <input type="text" id="name" name="name" placeholder="Как обращаться">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="contact">Контакт</label>
+              <input type="text" id="contact" name="contact" placeholder="Telegram / WhatsApp">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="service">Услуга</label>
+            <select id="service" name="service">
+              <option value="" disabled selected>— выберите</option>
+              <option value="aviation">Бизнес-авиация</option>
+              <option value="villas">Виллы и отели</option>
+              <option value="yachts">Яхт-чартер</option>
+              <option value="concierge">Консьерж-сервис</option>
+              <option value="multi">Несколько услуг</option>
+            </select>
+          </div>
+          <button type="button" class="form-next-btn" id="formNextBtn">Далее →</button>
+          <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+        </div>
+
+        <!-- ШАГ 2А — Бизнес-авиация -->
+        <div class="form-step form-step-2" id="step-aviation">
+          <button type="button" class="form-back-btn" data-back>Назад</button>
+          <div class="form-step-label">Бизнес-авиация</div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="av-from">Откуда</label>
+              <input type="text" id="av-from" name="av_from" placeholder="Город / аэропорт">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="av-to">Куда</label>
+              <input type="text" id="av-to" name="av_to" placeholder="Город / аэропорт">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="av-date">Дата вылета</label>
+              <input type="date" id="av-date" name="av_date">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="av-return">Обратно (если нужно)</label>
+              <input type="date" id="av-return" name="av_return">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="av-pax">Пассажиры</label>
+              <input type="number" id="av-pax" name="av_pax" placeholder="Кол-во человек" min="1" max="30">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="av-class">Класс воздушного судна</label>
+              <select id="av-class" name="av_class">
+                <option value="" disabled selected>— выберите</option>
+                <option>Light Jet (до 8 мест)</option>
+                <option>Midsize (до 9 мест)</option>
+                <option>Heavy Jet (до 14 мест)</option>
+                <option>Ultra-Long Range</option>
+                <option>Помогите выбрать</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="av-wishes">Пожелания</label>
+            <textarea id="av-wishes" name="av_wishes" placeholder="Питание, трансфер, особые запросы…"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Отправить запрос →</button>
+          <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+        </div>
+
+        <!-- ШАГ 2Б — Виллы и отели -->
+        <div class="form-step form-step-2" id="step-villas">
+          <button type="button" class="form-back-btn" data-back>Назад</button>
+          <div class="form-step-label">Виллы и отели</div>
+          <div class="field-group">
+            <label class="field-label" for="vil-dest">Направление</label>
+            <input type="text" id="vil-dest" name="vil_dest" placeholder="Страна, регион, город">
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="vil-checkin">Заезд</label>
+              <input type="date" id="vil-checkin" name="vil_checkin">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="vil-checkout">Выезд</label>
+              <input type="date" id="vil-checkout" name="vil_checkout">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="vil-guests">Гости</label>
+              <input type="number" id="vil-guests" name="vil_guests" placeholder="Кол-во человек" min="1">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="vil-budget">Бюджет</label>
+              <input type="text" id="vil-budget" name="vil_budget" placeholder="€ / $ в сутки или общий">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="vil-wishes">Пожелания</label>
+            <textarea id="vil-wishes" name="vil_wishes" placeholder="Пул, персонал, локация, стиль виллы…"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Отправить запрос →</button>
+          <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+        </div>
+
+        <!-- ШАГ 2В — Яхт-чартер -->
+        <div class="form-step form-step-2" id="step-yachts">
+          <button type="button" class="form-back-btn" data-back>Назад</button>
+          <div class="form-step-label">Яхт-чартер</div>
+          <div class="field-group">
+            <label class="field-label" for="ya-port">Порт отправления</label>
+            <input type="text" id="ya-port" name="ya_port" placeholder="Монако, Ибица, Сплит…">
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="ya-start">Начало чартера</label>
+              <input type="date" id="ya-start" name="ya_start">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="ya-end">Конец чартера</label>
+              <input type="date" id="ya-end" name="ya_end">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="ya-type">Тип яхты</label>
+              <select id="ya-type" name="ya_type">
+                <option value="" disabled selected>— выберите</option>
+                <option>Моторная яхта</option>
+                <option>Парусная яхта</option>
+                <option>Катамаран</option>
+                <option>Гулет</option>
+                <option>Не важно — подберите</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="ya-pax">Человек на борту</label>
+              <input type="number" id="ya-pax" name="ya_pax" placeholder="Кол-во человек" min="1">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="ya-wishes">Пожелания</label>
+            <textarea id="ya-wishes" name="ya_wishes" placeholder="Маршрут, бюджет, особые пожелания…"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Отправить запрос →</button>
+          <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+        </div>
+
+        <!-- ШАГ 2Г — Консьерж-сервис -->
+        <div class="form-step form-step-2" id="step-concierge">
+          <button type="button" class="form-back-btn" data-back>Назад</button>
+          <div class="form-step-label">Консьерж-сервис</div>
+          <div class="field-group">
+            <label class="field-label" for="co-location">Страна / город</label>
+            <input type="text" id="co-location" name="co_location" placeholder="Где нужна помощь">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="co-date">Дата (если актуально)</label>
+            <input type="date" id="co-date" name="co_date">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="co-request">Опишите запрос</label>
+            <textarea id="co-request" name="co_request" placeholder="Ресторан, мероприятие, медицина, охрана, визы…" style="min-height:120px;"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Отправить запрос →</button>
+          <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+        </div>
+
+        <!-- ШАГ 2Д — Несколько услуг -->
+        <div class="form-step form-step-2" id="step-multi">
+          <button type="button" class="form-back-btn" data-back>Назад</button>
+          <div class="form-step-label">Несколько услуг</div>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="mu-start">Начало поездки</label>
+              <input type="date" id="mu-start" name="mu_start">
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="mu-end">Конец поездки</label>
+              <input type="date" id="mu-end" name="mu_end">
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="mu-desc">Опишите поездку</label>
+            <textarea id="mu-desc" name="mu_desc" placeholder="Что нужно организовать, маршрут, пожелания…" style="min-height:120px;"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Отправить запрос →</button>
+          <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+        </div>
+
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h3>Заявка принята</h3>
+        <p>Менеджер свяжется с вами в течение часа.<br>Спасибо, что выбрали нас.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">PTS &mdash; <span>Private Travel</span></a>
+  <ul class="footer-nav">
+    <li><a href="aviation.html">Авиация</a></li>
+    <li><a href="villas.html">Виллы</a></li>
+    <li><a href="yachts.html">Яхты</a></li>
+    <li><a href="concierge.html">Консьерж</a></li>
+  </ul>
+  <div class="footer-contacts">
+    <a href="https://t.me/pts">Telegram</a>
+    <a href="https://wa.me/79000000000">WhatsApp</a>
+    <a href="mailto:hello@pts.travel">hello@pts.travel</a>
+  </div>
+  <p class="footer-tagline">«Мы не агентство, мы партнёры. Сначала — комфорт, потом логистика.»</p>
+</footer>
+
+<a href="#form" class="mobile-sticky-cta">Оставить заявку</a>
+
+<script src="shared.js"></script>
+<script>
+(function() {
+  var serviceMap = {
+    aviation: 'step-aviation',
+    villas:   'step-villas',
+    yachts:   'step-yachts',
+    concierge:'step-concierge',
+    multi:    'step-multi'
+  };
+
+  var step1   = document.getElementById('formStep1');
+  var nextBtn = document.getElementById('formNextBtn');
+  var nameIn  = document.getElementById('name');
+  var contIn  = document.getElementById('contact');
+  var svcSel  = document.getElementById('service');
+
+  if (!nextBtn) return;
+
+  nextBtn.addEventListener('click', function() {
+    var name    = nameIn.value.trim();
+    var contact = contIn.value.trim();
+    var service = svcSel.value;
+
+    if (!name)    { nameIn.focus();  return; }
+    if (!contact) { contIn.focus();  return; }
+    if (!service) { svcSel.focus();  return; }
+
+    step1.style.display = 'none';
+
+    var stepEl = document.getElementById(serviceMap[service]);
+    if (stepEl) {
+      stepEl.classList.add('active');
+      stepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  });
+
+  document.querySelectorAll('[data-back]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var parent = btn.closest('.form-step-2');
+      if (parent) parent.classList.remove('active');
+      step1.style.display = '';
+      step1.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+})();
+</script>
+</body>
+</html>

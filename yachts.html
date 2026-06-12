@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Яхт-чартер — Private Travel Services</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .formats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+  .format-card {
+    padding: 44px 28px;
+    background: var(--bg2);
+    border-top: 2px solid transparent;
+    transition: all .4s;
+    display: flex; flex-direction: column;
+    min-height: 360px;
+    position: relative; overflow: hidden;
+  }
+  .format-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(196,151,106,.07) 0%, transparent 60%);
+    opacity: 0; transition: opacity .4s;
+  }
+  .format-card:hover { border-top-color: var(--honey); background: var(--bg3); }
+  .format-card:hover::before { opacity: 1; }
+  .format-num { font-family: var(--mono); font-size: 10px; letter-spacing: .2em; color: var(--text-dim); margin-bottom: 28px; }
+  .format-icon { font-size: 26px; margin-bottom: 16px; display: block; }
+  .format-name { font-family: var(--serif); font-size: 20px; font-weight: 400; color: var(--cream-light); margin-bottom: 12px; line-height: 1.2; }
+  .format-text { font-size: 13px; font-weight: 300; color: var(--text-muted); line-height: 1.65; flex: 1; }
+  .format-locs { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-dim); }
+  .format-locs-label { font-family: var(--mono); font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; display: block; }
+  .format-locs ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .format-locs li { font-size: 12px; font-weight: 300; color: var(--honey); display: flex; align-items: center; gap: 8px; }
+  .format-locs li::before { content: ''; display: block; width: 10px; height: 1px; background: var(--honey); opacity: .5; }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+  .how-step {
+    padding: 40px 28px;
+    background: var(--bg2);
+    position: relative;
+  }
+  .how-step-num { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; color: var(--honey); margin-bottom: 24px; display: block; }
+  .how-step-title { font-family: var(--serif); font-size: 20px; font-weight: 400; color: var(--cream-light); margin-bottom: 10px; }
+  .how-step-text { font-size: 13px; font-weight: 300; color: var(--text-muted); line-height: 1.6; }
+  .how-step::after {
+    content: '→';
+    position: absolute;
+    right: -14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    font-size: 16px;
+    z-index: 2;
+  }
+  .how-step:last-child::after { display: none; }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 40px;
+  }
+  .trust-item {
+    padding: 32px 28px;
+    background: var(--bg);
+    display: flex; gap: 16px; align-items: flex-start;
+    transition: background .3s;
+  }
+  .trust-item:hover { background: var(--bg3); }
+  .trust-icon { font-size: 20px; flex-shrink: 0; }
+  .trust-title { font-family: var(--serif); font-size: 16px; color: var(--cream-light); margin-bottom: 6px; }
+  .trust-text { font-size: 13px; font-weight: 300; color: var(--text-muted); line-height: 1.5; }
+
+  @media (max-width: 1100px) { .formats-grid { grid-template-columns: repeat(3, 1fr); } .how-grid { grid-template-columns: repeat(2, 1fr); } .how-step::after { display: none; } }
+  @media (max-width: 640px) { .formats-grid { grid-template-columns: 1fr; } .how-grid { grid-template-columns: 1fr; } .trust-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">PTS &mdash; <span>Private Travel</span></a>
+  <ul class="nav-links">
+    <li><a href="aviation.html">Авиация</a></li>
+    <li><a href="villas.html">Виллы и отели</a></li>
+    <li><a href="yachts.html">Яхты</a></li>
+    <li><a href="concierge.html">Консьерж</a></li>
+  </ul>
+  <a href="#form" class="nav-cta">Подобрать яхту</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=1920&q=80');"></div>
+  <span class="hero-label">Яхт-чартер</span>
+  <h1 class="hero-title">Горизонты<br><em>без границ.</em></h1>
+  <p class="hero-sub">Яхта — это не просто плавучий дом. Это свобода, приватность, превращённая в искусство, и маршрут, который пишете вы.</p>
+  <div class="hero-actions">
+    <a href="#formats" class="btn-primary">Форматы отдыха</a>
+    <a href="#form" class="btn-ghost">Подобрать яхту</a>
+  </div>
+  <div class="hero-scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="marquee-band">
+  <div class="marquee-track">
+    <span class="marquee-item">Санторини</span><span class="marquee-item">Монако</span><span class="marquee-item">Ибица</span>
+    <span class="marquee-item">Мальдивы</span><span class="marquee-item">Дубай</span><span class="marquee-item">Сейшелы</span>
+    <span class="marquee-item">Хорватия</span><span class="marquee-item">Миконос</span><span class="marquee-item">Сен-Тропе</span>
+    <span class="marquee-item">Санторини</span><span class="marquee-item">Монако</span><span class="marquee-item">Ибица</span>
+    <span class="marquee-item">Мальдивы</span><span class="marquee-item">Дубай</span><span class="marquee-item">Сейшелы</span>
+    <span class="marquee-item">Хорватия</span><span class="marquee-item">Миконос</span><span class="marquee-item">Сен-Тропе</span>
+  </div>
+</div>
+
+<!-- FORMATS -->
+<section class="section" id="formats">
+  <div class="reveal">
+    <span class="section-label">01 &mdash; Форматы</span>
+    <h2 class="section-title">Яхта — это<br><em>не только тусовка</em></h2>
+  </div>
+  <div class="formats-grid" data-stagger>
+    <div class="format-card reveal">
+      <div class="format-num">01</div>
+      <span class="format-icon">🛥️</span>
+      <div class="format-name">Пляжный отдых</div>
+      <p class="format-text">Бесконечный загар, бокал игристого у кромки воды и волны, которые шепчут, что сегодня всё идеально. Никаких правил — только вы и море.</p>
+      <div class="format-locs">
+        <span class="format-locs-label">Направления</span>
+        <ul><li>Санторини, Греция</li><li>Хорватия</li><li>Бодрум, Турция</li></ul>
+      </div>
+    </div>
+    <div class="format-card reveal">
+      <div class="format-num">02</div>
+      <span class="format-icon">🥂</span>
+      <div class="format-name">Вечеринка на воде</div>
+      <p class="format-text">Нет соседей, нет барьеров. Только вы, гости, шампанское и музыка, которая сливается с ритмом волн. Это не вечеринка — это легенда.</p>
+      <div class="format-locs">
+        <span class="format-locs-label">Направления</span>
+        <ul><li>Ибица, Испания</li><li>Сен-Тропе, Франция</li><li>Миконос, Греция</li></ul>
+      </div>
+    </div>
+    <div class="format-card reveal">
+      <div class="format-num">03</div>
+      <span class="format-icon">💼</span>
+      <div class="format-name">Бизнес / Private Reset</div>
+      <p class="format-text">Важная встреча требует приватности. Wi-Fi, переговорная зона, бортовой шеф. Сделки заключаются легко под шум волн.</p>
+      <div class="format-locs">
+        <span class="format-locs-label">Направления</span>
+        <ul><li>Монако</li><li>Дубай, ОАЭ</li><li>Нью-Йорк, США</li></ul>
+      </div>
+    </div>
+    <div class="format-card reveal">
+      <div class="format-num">04</div>
+      <span class="format-icon">🧘</span>
+      <div class="format-name">Ретрит / Восстановление</div>
+      <p class="format-text">Медитация под шум волн, йога на палубе, вечера без тревог. Вы не отключаетесь от жизни — вы возвращаетесь к её истокам.</p>
+      <div class="format-locs">
+        <span class="format-locs-label">Направления</span>
+        <ul><li>Мальдивы</li><li>Амальфи, Италия</li><li>Сейшелы</li></ul>
+      </div>
+    </div>
+    <div class="format-card reveal">
+      <div class="format-num">05</div>
+      <span class="format-icon">🏄</span>
+      <div class="format-name">Спорт и актив</div>
+      <p class="format-text">Яхта — стартовая площадка для вейкбординга, дайвинга, серфинга, подводной охоты. Море — главный союзник в вашей истории.</p>
+      <div class="format-locs">
+        <span class="format-locs-label">Направления</span>
+        <ul><li>Оман</li><li>Бахрейн</li><li>Канкун, Мексика</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section section-alt" id="how">
+  <div class="reveal">
+    <span class="section-label">02 &mdash; Как это работает</span>
+    <h2 class="section-title">Без головной<br><em>боли</em></h2>
+  </div>
+  <div class="how-grid" data-stagger>
+    <div class="how-step reveal">
+      <span class="how-step-num">01</span>
+      <div class="how-step-title">Оставляете заявку</div>
+      <p class="how-step-text">Форма, Telegram или звонок. Отвечаем в течение часа.</p>
+    </div>
+    <div class="how-step reveal">
+      <span class="how-step-num">02</span>
+      <div class="how-step-title">Уточняем детали</div>
+      <p class="how-step-text">Даты, маршрут, формат, пожелания по экипажу и питанию.</p>
+    </div>
+    <div class="how-step reveal">
+      <span class="how-step-num">03</span>
+      <div class="how-step-title">Получаете подборку</div>
+      <p class="how-step-text">3–5 вариантов с ценами, фото и деталями. Выбираете — бронируем.</p>
+    </div>
+    <div class="how-step reveal">
+      <span class="how-step-num">04</span>
+      <div class="how-step-title">Организуем под ключ</div>
+      <p class="how-step-text">Перелёт, трансфер, питание, охрана, ресторанные брони.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY TRUST -->
+<section class="section" id="why">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
+    <div class="reveal">
+      <span class="section-label">03 &mdash; Почему доверяют</span>
+      <h2 class="section-title">Стандарты<br><em>без исключений</em></h2>
+      <p style="margin-top:28px;font-size:16px;font-weight:300;color:var(--text-muted);line-height:1.75;max-width:360px;">Мы не агентство. Мы партнёры. Сначала — комфорт, потом яхта.</p>
+    </div>
+    <div>
+      <div class="trust-grid">
+        <div class="trust-item reveal">
+          <span class="trust-icon">✅</span>
+          <div><div class="trust-title">Только проверенные яхты</div><p class="trust-text">Каждый экипаж прошёл отбор. Никаких сюрпризов на борту.</p></div>
+        </div>
+        <div class="trust-item reveal">
+          <span class="trust-icon">🤝</span>
+          <div><div class="trust-title">Напрямую с владельцами</div><p class="trust-text">Без лишних посредников — цены честные.</p></div>
+        </div>
+        <div class="trust-item reveal">
+          <span class="trust-icon">🔒</span>
+          <div><div class="trust-title">NDA и анонимность</div><p class="trust-text">Полная конфиденциальность. Ваши маршруты — только для вас.</p></div>
+        </div>
+        <div class="trust-item reveal">
+          <span class="trust-icon">📍</span>
+          <div><div class="trust-title">Маршруты, визы, погода</div><p class="trust-text">Весь логистический слой берём на себя.</p></div>
+        </div>
+        <div class="trust-item reveal" style="grid-column:1/-1;">
+          <span class="trust-icon">🕐</span>
+          <div><div class="trust-title">24/7 сопровождение</div><p class="trust-text">Менеджер на связи до, во время и после поездки — в любом часовом поясе.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="form-section" id="form">
+  <div class="form-layout">
+    <div class="form-left reveal">
+      <span class="section-label">04 &mdash; Заявка</span>
+      <h2 class="section-title">Оставьте<br><em>номер</em></h2>
+      <p>Подберём 3–5 вариантов под ваш запрос за 1 час. Без давления — только подборка и цены.</p>
+      <div class="form-badge">
+        <div class="form-badge-icon">⛵</div>
+        <div class="form-badge-text">
+          <strong>Ответ в течение часа</strong>
+          Менеджер свяжется удобным способом и задаст пару вопросов для точного подбора.
+        </div>
+      </div>
+    </div>
+    <div>
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="name">Имя</label>
+            <input type="text" id="name" name="name" placeholder="Как обращаться" required>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="contact">Контакт</label>
+            <input type="text" id="contact" name="contact" placeholder="Telegram / WhatsApp" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field-group">
+            <label class="field-label" for="dates">Даты / Локация</label>
+            <input type="text" id="dates" name="dates" placeholder="Июль, Греция">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="format">Формат</label>
+            <select id="format" name="format">
+              <option value="" disabled selected>— выберите</option>
+              <option>Пляжный отдых</option>
+              <option>Вечеринка на воде</option>
+              <option>Бизнес / переговоры</option>
+              <option>Ретрит / восстановление</option>
+              <option>Спорт и актив</option>
+              <option>Ещё не определился</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="wishes">Пожелания</label>
+          <textarea id="wishes" name="wishes" placeholder="Количество гостей, бюджет, особые пожелания…"></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Подобрать яхту →</button>
+        <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h3>Заявка принята</h3>
+        <p>Менеджер свяжется с вами в течение часа.<br>Спасибо, что выбрали нас.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="index.html" class="footer-logo">PTS &mdash; <span>Private Travel</span></a>
+  <ul class="footer-nav">
+    <li><a href="aviation.html">Авиация</a></li>
+    <li><a href="villas.html">Виллы</a></li>
+    <li><a href="yachts.html">Яхты</a></li>
+    <li><a href="concierge.html">Консьерж</a></li>
+  </ul>
+  <div class="footer-contacts">
+    <a href="https://t.me/pts">Telegram</a>
+    <a href="https://wa.me/79000000000">WhatsApp</a>
+    <a href="mailto:hello@pts.travel">hello@pts.travel</a>
+  </div>
+  <p class="footer-tagline">«Мы не агентство, мы партнёры. Сначала — комфорт, потом яхта.»</p>
+</footer>
+
+<script src="shared.js"></script>
+</body>
+</html>
