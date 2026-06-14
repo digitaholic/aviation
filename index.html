@@ -102,21 +102,57 @@
   margin-bottom: 4px;
 }
 
-/* Date input styling */
+/* Date input styling — light theme */
 input[type="date"] {
-  color-scheme: dark;
+  color-scheme: light;
   cursor: pointer;
 }
 input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: opacity(0.45) sepia(1) hue-rotate(340deg) saturate(1.5);
+  opacity: 0.45;
   cursor: pointer;
-  transition: filter .3s;
+  transition: opacity .3s;
 }
 input[type="date"]:hover::-webkit-calendar-picker-indicator,
 input[type="date"]:focus::-webkit-calendar-picker-indicator {
-  filter: opacity(0.85) sepia(1) hue-rotate(340deg) saturate(1.5);
+  opacity: 0.85;
 }
 input[type="number"] { cursor: text; }
+
+/* Trip type toggle (туда / туда-обратно) */
+.trip-toggle {
+  display: flex;
+  border: 1px solid var(--border-dim);
+  overflow: hidden;
+  margin-bottom: 3px;
+}
+.trip-toggle input[type="radio"] {
+  display: none;
+}
+.trip-toggle label {
+  flex: 1;
+  text-align: center;
+  padding: 13px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--bg2);
+  cursor: pointer;
+  transition: background .25s, color .25s;
+  border-right: 1px solid var(--border-dim);
+  user-select: none;
+  line-height: 1;
+}
+.trip-toggle label:last-of-type { border-right: none; }
+.trip-toggle input[type="radio"]:checked + label {
+  background: var(--honey);
+  color: var(--ivory);
+}
+.trip-toggle label:hover:not(.trip-toggle input:checked + label) {
+  background: var(--bg3);
+  color: var(--text-muted);
+}
 </style>
 </head>
 <body>
@@ -334,21 +370,41 @@ input[type="number"] { cursor: text; }
             <label class="field-label" for="service">Услуга</label>
             <select id="service" name="service">
               <option value="" disabled selected>— выберите</option>
-              <option value="aviation">Бизнес-авиация</option>
+              <option value="aviation">Перелёт на джете</option>
               <option value="villas">Виллы и отели</option>
-              <option value="yachts">Яхт-чартер</option>
-              <option value="concierge">Консьерж-сервис</option>
-              <option value="multi">Несколько услуг</option>
+              <option value="yachts">Яхта</option>
             </select>
           </div>
           <button type="button" class="form-next-btn" id="formNextBtn">Далее →</button>
           <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
         </div>
 
-        <!-- ШАГ 2А — Бизнес-авиация -->
+        <!-- ШАГ 2А — Перелёт на джете -->
         <div class="form-step form-step-2" id="step-aviation">
           <button type="button" class="form-back-btn" data-back>Назад</button>
-          <div class="form-step-label">Бизнес-авиация</div>
+          <div class="form-step-label">Перелёт на джете</div>
+
+          <div class="field-group">
+            <label class="field-label">Тип перелёта</label>
+            <div class="trip-toggle">
+              <input type="radio" name="av_trip" id="av-oneway" value="oneway" checked>
+              <label for="av-oneway">Туда</label>
+              <input type="radio" name="av_trip" id="av-roundtrip" value="roundtrip">
+              <label for="av-roundtrip">Туда-обратно</label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label" for="av-date">Дата вылета</label>
+              <input type="date" id="av-date" name="av_date">
+            </div>
+            <div class="field-group" id="av-return-group" style="display:none;">
+              <label class="field-label" for="av-return">Дата возврата</label>
+              <input type="date" id="av-return" name="av_return">
+            </div>
+          </div>
+
           <div class="form-row">
             <div class="field-group">
               <label class="field-label" for="av-from">Откуда</label>
@@ -359,37 +415,17 @@ input[type="number"] { cursor: text; }
               <input type="text" id="av-to" name="av_to" placeholder="Город / аэропорт">
             </div>
           </div>
-          <div class="form-row">
-            <div class="field-group">
-              <label class="field-label" for="av-date">Дата вылета</label>
-              <input type="date" id="av-date" name="av_date">
-            </div>
-            <div class="field-group">
-              <label class="field-label" for="av-return">Обратно (если нужно)</label>
-              <input type="date" id="av-return" name="av_return">
-            </div>
+
+          <div class="field-group">
+            <label class="field-label" for="av-pax">Пассажиры</label>
+            <input type="number" id="av-pax" name="av_pax" placeholder="Кол-во человек" min="1" max="30">
           </div>
-          <div class="form-row">
-            <div class="field-group">
-              <label class="field-label" for="av-pax">Пассажиры</label>
-              <input type="number" id="av-pax" name="av_pax" placeholder="Кол-во человек" min="1" max="30">
-            </div>
-            <div class="field-group">
-              <label class="field-label" for="av-class">Класс воздушного судна</label>
-              <select id="av-class" name="av_class">
-                <option value="" disabled selected>— выберите</option>
-                <option>Light Jet (до 8 мест)</option>
-                <option>Midsize (до 9 мест)</option>
-                <option>Heavy Jet (до 14 мест)</option>
-                <option>Ultra-Long Range</option>
-                <option>Помогите выбрать</option>
-              </select>
-            </div>
-          </div>
+
           <div class="field-group">
             <label class="field-label" for="av-wishes">Пожелания</label>
-            <textarea id="av-wishes" name="av_wishes" placeholder="Питание, трансфер, особые запросы…"></textarea>
+            <textarea id="av-wishes" name="av_wishes" placeholder="Класс борта, количество кресел, пожелания по питанию, бизнес-класс к/от города вылета"></textarea>
           </div>
+
           <button type="submit" class="btn-submit">Отправить запрос →</button>
           <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
         </div>
@@ -398,10 +434,7 @@ input[type="number"] { cursor: text; }
         <div class="form-step form-step-2" id="step-villas">
           <button type="button" class="form-back-btn" data-back>Назад</button>
           <div class="form-step-label">Виллы и отели</div>
-          <div class="field-group">
-            <label class="field-label" for="vil-dest">Направление</label>
-            <input type="text" id="vil-dest" name="vil_dest" placeholder="Страна, регион, город">
-          </div>
+
           <div class="form-row">
             <div class="field-group">
               <label class="field-label" for="vil-checkin">Заезд</label>
@@ -412,105 +445,57 @@ input[type="number"] { cursor: text; }
               <input type="date" id="vil-checkout" name="vil_checkout">
             </div>
           </div>
-          <div class="form-row">
-            <div class="field-group">
-              <label class="field-label" for="vil-guests">Гости</label>
-              <input type="number" id="vil-guests" name="vil_guests" placeholder="Кол-во человек" min="1">
-            </div>
-            <div class="field-group">
-              <label class="field-label" for="vil-budget">Бюджет</label>
-              <input type="text" id="vil-budget" name="vil_budget" placeholder="€ / $ в сутки или общий">
-            </div>
+
+          <div class="field-group">
+            <label class="field-label" for="vil-dest">Место отдыха</label>
+            <input type="text" id="vil-dest" name="vil_dest" placeholder="Страна, регион, город">
           </div>
+
+          <div class="field-group">
+            <label class="field-label" for="vil-guests">Гости</label>
+            <input type="number" id="vil-guests" name="vil_guests" placeholder="Кол-во человек" min="1">
+          </div>
+
           <div class="field-group">
             <label class="field-label" for="vil-wishes">Пожелания</label>
-            <textarea id="vil-wishes" name="vil_wishes" placeholder="Пул, персонал, локация, стиль виллы…"></textarea>
+            <textarea id="vil-wishes" name="vil_wishes" placeholder="Апартаменты, вилла или отель; трансфер и авто; гид и билеты; ресторан и банкет"></textarea>
           </div>
+
           <button type="submit" class="btn-submit">Отправить запрос →</button>
           <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
         </div>
 
-        <!-- ШАГ 2В — Яхт-чартер -->
+        <!-- ШАГ 2В — Яхта -->
         <div class="form-step form-step-2" id="step-yachts">
           <button type="button" class="form-back-btn" data-back>Назад</button>
-          <div class="form-step-label">Яхт-чартер</div>
-          <div class="field-group">
-            <label class="field-label" for="ya-port">Порт отправления</label>
-            <input type="text" id="ya-port" name="ya_port" placeholder="Монако, Ибица, Сплит…">
-          </div>
+          <div class="form-step-label">Яхта</div>
+
           <div class="form-row">
             <div class="field-group">
-              <label class="field-label" for="ya-start">Начало чартера</label>
+              <label class="field-label" for="ya-start">Начало</label>
               <input type="date" id="ya-start" name="ya_start">
             </div>
             <div class="field-group">
-              <label class="field-label" for="ya-end">Конец чартера</label>
+              <label class="field-label" for="ya-end">Конец</label>
               <input type="date" id="ya-end" name="ya_end">
             </div>
           </div>
-          <div class="form-row">
-            <div class="field-group">
-              <label class="field-label" for="ya-type">Тип яхты</label>
-              <select id="ya-type" name="ya_type">
-                <option value="" disabled selected>— выберите</option>
-                <option>Моторная яхта</option>
-                <option>Парусная яхта</option>
-                <option>Катамаран</option>
-                <option>Гулет</option>
-                <option>Не важно — подберите</option>
-              </select>
-            </div>
-            <div class="field-group">
-              <label class="field-label" for="ya-pax">Человек на борту</label>
-              <input type="number" id="ya-pax" name="ya_pax" placeholder="Кол-во человек" min="1">
-            </div>
+
+          <div class="field-group">
+            <label class="field-label" for="ya-port">Город / порт</label>
+            <input type="text" id="ya-port" name="ya_port" placeholder="Монако, Ибица, Сплит…">
           </div>
+
+          <div class="field-group">
+            <label class="field-label" for="ya-cabins">Каюты</label>
+            <input type="number" id="ya-cabins" name="ya_cabins" placeholder="Кол-во кают" min="1">
+          </div>
+
           <div class="field-group">
             <label class="field-label" for="ya-wishes">Пожелания</label>
-            <textarea id="ya-wishes" name="ya_wishes" placeholder="Маршрут, бюджет, особые пожелания…"></textarea>
+            <textarea id="ya-wishes" name="ya_wishes" placeholder="Питание и банкет, маршрут и причалы, ночёвки на воде, трансфер"></textarea>
           </div>
-          <button type="submit" class="btn-submit">Отправить запрос →</button>
-          <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
-        </div>
 
-        <!-- ШАГ 2Г — Консьерж-сервис -->
-        <div class="form-step form-step-2" id="step-concierge">
-          <button type="button" class="form-back-btn" data-back>Назад</button>
-          <div class="form-step-label">Консьерж-сервис</div>
-          <div class="field-group">
-            <label class="field-label" for="co-location">Страна / город</label>
-            <input type="text" id="co-location" name="co_location" placeholder="Где нужна помощь">
-          </div>
-          <div class="field-group">
-            <label class="field-label" for="co-date">Дата (если актуально)</label>
-            <input type="date" id="co-date" name="co_date">
-          </div>
-          <div class="field-group">
-            <label class="field-label" for="co-request">Опишите запрос</label>
-            <textarea id="co-request" name="co_request" placeholder="Ресторан, мероприятие, медицина, охрана, визы…" style="min-height:120px;"></textarea>
-          </div>
-          <button type="submit" class="btn-submit">Отправить запрос →</button>
-          <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
-        </div>
-
-        <!-- ШАГ 2Д — Несколько услуг -->
-        <div class="form-step form-step-2" id="step-multi">
-          <button type="button" class="form-back-btn" data-back>Назад</button>
-          <div class="form-step-label">Несколько услуг</div>
-          <div class="form-row">
-            <div class="field-group">
-              <label class="field-label" for="mu-start">Начало поездки</label>
-              <input type="date" id="mu-start" name="mu_start">
-            </div>
-            <div class="field-group">
-              <label class="field-label" for="mu-end">Конец поездки</label>
-              <input type="date" id="mu-end" name="mu_end">
-            </div>
-          </div>
-          <div class="field-group">
-            <label class="field-label" for="mu-desc">Опишите поездку</label>
-            <textarea id="mu-desc" name="mu_desc" placeholder="Что нужно организовать, маршрут, пожелания…" style="min-height:120px;"></textarea>
-          </div>
           <button type="submit" class="btn-submit">Отправить запрос →</button>
           <p class="form-fine">Конфиденциально · NDA по запросу · Без обязательств</p>
         </div>
@@ -549,9 +534,7 @@ input[type="number"] { cursor: text; }
   var serviceMap = {
     aviation: 'step-aviation',
     villas:   'step-villas',
-    yachts:   'step-yachts',
-    concierge:'step-concierge',
-    multi:    'step-multi'
+    yachts:   'step-yachts'
   };
 
   var step1   = document.getElementById('formStep1');
@@ -586,6 +569,16 @@ input[type="number"] { cursor: text; }
       if (parent) parent.classList.remove('active');
       step1.style.display = '';
       step1.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+
+  // Trip toggle — show/hide return date field
+  var returnGroup = document.getElementById('av-return-group');
+  document.querySelectorAll('input[name="av_trip"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      if (returnGroup) {
+        returnGroup.style.display = this.value === 'roundtrip' ? '' : 'none';
+      }
     });
   });
 })();
